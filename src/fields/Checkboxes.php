@@ -63,4 +63,18 @@ class Checkboxes extends Field
             'options' => $options,
         ]);
     }
+
+    /**
+     * @inheritdoc
+     */
+    public function normalizeValue($value, ElementInterface $element = null)
+    {
+        if (is_string($value)) {
+            $value = Json::decodeIfJson($value);
+        } else if ($value === null && $this->isFresh($element)) {
+            $value = [];
+        }
+
+        return (array)$value;
+    }
 }
